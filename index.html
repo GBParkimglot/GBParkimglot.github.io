@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>강로 포켓몬 도감</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f2f2f2; text-align: center; padding: 20px; }
+    body { font-family: Arial, sans-serif; background: #f0f8ff; text-align: center; padding: 20px; }
     input, button { padding: 10px; font-size: 16px; }
     #result { margin-top: 30px; }
     img { width: 200px; }
@@ -18,13 +18,13 @@
   <div id="result"></div>
 
   <script>
-    // 지정된 이름 → 포켓몬 고정
+    // 지정된 이름과 영어 포켓몬
     const assigned = {
       '박기범': 'pikachu',
       '김민혁': 'nosepass',
       '박서영': 'ampharos',
       '김종현': 'delibird',
-      '최영현': 'keiser',
+      '최영현': 'keiser',      // 공식명 없음
       '이유진': 'aipom',
       '김다은': 'smoochum',
       '권채니': 'xatu',
@@ -33,76 +33,138 @@
       '오세리': 'hoothoot'
     };
 
-    // 랜덤 할당용 포켓몬 리스트
+    // 50개 랜덤용 영어 포켓몬
     const randomPool = [
       'bulbasaur', 'charmander', 'squirtle', 'eevee', 'jigglypuff',
       'snorlax', 'meowth', 'psyduck', 'gengar', 'machop',
       'abra', 'magnemite', 'geodude', 'onix', 'cubone',
-      'dratini', 'pidgey', 'rattata', 'bellsprout', 'slowpoke'
+      'dratini', 'pidgey', 'rattata', 'bellsprout', 'slowpoke',
+      'growlithe', 'doduo', 'seel', 'grimer', 'shellder',
+      'krabby', 'voltorb', 'exeggcute', 'koffing', 'tangela',
+      'horsea', 'goldeen', 'staryu', 'scyther', 'pinsir',
+      'tauros', 'lapras', 'ditto', 'omanyte', 'kabuto',
+      'aerodactyl', 'togepi', 'mareep', 'marill', 'phanpy',
+      'treecko', 'torchic', 'mudkip', 'ralts', 'slakoth'
     ];
 
-    // 모든 포켓몬 설명 모음
+    // 영어 → 한국어 이름 매핑
+    const nameMap = {
+      'pikachu': '피카츄',
+      'nosepass': '코코파스',
+      'ampharos': '전룡',
+      'delibird': '딜리버드',
+      'keiser': '카이저',
+      'aipom': '에이팜',
+      'smoochum': '뽀송송',
+      'xatu': '네이티오',
+      'gorebyss': '분홍장이',
+      'frogadier': '개굴반장',
+      'hoothoot': '부우부',
+      // 랜덤풀 기본 한국어 이름
+      'bulbasaur': '이상해씨',
+      'charmander': '파이리',
+      'squirtle': '꼬부기',
+      'eevee': '이브이',
+      'jigglypuff': '푸린',
+      'snorlax': '잠만보',
+      'meowth': '나옹',
+      'psyduck': '고라파덕',
+      'gengar': '팬텀',
+      'machop': '알통몬',
+      'abra': '캐이시',
+      'magnemite': '코일',
+      'geodude': '꼬마돌',
+      'onix': '롱스톤',
+      'cubone': '탕구리',
+      'dratini': '미뇽',
+      'pidgey': '구구',
+      'rattata': '꼬렛',
+      'bellsprout': '뚜벅쵸',
+      'slowpoke': '야돈',
+      'growlithe': '가디',
+      'doduo': '두두',
+      'seel': '쥬쥬',
+      'grimer': '질퍽이',
+      'shellder': '셸러',
+      'krabby': '크랩',
+      'voltorb': '찌리리공',
+      'exeggcute': '아라리',
+      'koffing': '또가스',
+      'tangela': '덩쿠리',
+      'horsea': '쏘드라',
+      'goldeen': '콘치',
+      'staryu': '별가사리',
+      'scyther': '스라크',
+      'pinsir': '쁘사이저',
+      'tauros': '켄타로스',
+      'lapras': '라프라스',
+      'ditto': '메타몽',
+      'omanyte': '암나이트',
+      'kabuto': '투구',
+      'aerodactyl': '프테라',
+      'togepi': '토게피',
+      'mareep': '메리프',
+      'marill': '마릴',
+      'phanpy': '코코리',
+      'treecko': '나무지기',
+      'torchic': '아차모',
+      'mudkip': '물짱이',
+      'ralts': '랄토스',
+      'slakoth': '게을로'
+    };
+
+    // 설명
     const descriptions = {
       'pikachu': '피카츄는 집중력을 번개처럼 빠르게 모아 단기 기억을 강화한다.',
-      'nosepass': '노즈패스는 시험 방향을 절대 잃지 않는다. 항상 진로가 정해져 있다.',
+      'nosepass': '시험 방향을 절대 잃지 않는 로스쿨 나침반.',
       'ampharos': '전기를 조절해 야근을 버티는 인내력의 마스터.',
-      'delibird': '과제와 판례를 항상 백팩에 준비해두는 꼼꼼한 로스쿨러.',
-      'keiser': '강한 압박에도 흔들리지 않는 멘탈의 소유자.',
+      'delibird': '과제와 판례를 백팩에 준비하는 꼼꼼한 로스쿨러.',
+      'keiser': '압박에도 흔들리지 않는 멘탈의 지배자.',
       'aipom': '꼬리를 이용해 다양한 필기법을 구사하는 멀티태스커.',
       'smoochum': '최신 판례에 예민하게 반응하는 센스쟁이.',
       'xatu': '미래의 판례까지 내다보는 예지력의 포켓몬.',
       'gorebyss': '깊이 파고드는 분석으로 교수의 질문을 무력화시킨다.',
-      'frogadier': '조용하지만 날렵하게 과제를 처리하는 닌자 스타일.',
-      'hoothoot': '야간 공부에 특화된 올빼미형 로스쿨러.',
-      'bulbasaur': '기초 개념부터 차근차근 쌓는 튼튼한 학습자.',
-      'charmander': '열정이 과제 제출 마감일보다 뜨거운 포켓몬.',
-      'squirtle': '냉정하고 침착하게 조별과제를 조율한다.',
-      'eevee': '상황에 맞게 다양한 스터디 전략으로 진화 가능.',
-      'jigglypuff': '공부 중 졸음을 유도하지만 사실 잠 안 자는 야행성.',
-      'snorlax': '자기 전 모든 것을 흡수하는 느긋한 천재.',
-      'meowth': '판례 속 핵심 단어를 기가 막히게 캐치한다.',
-      'psyduck': '혼란스러워 보이지만 아이디어가 번뜩인다.',
-      'gengar': '밤샘 공부도 유령처럼 사라지게 만드는 집중력.',
-      'machop': '케이스 브리핑도 체력으로 밀어붙인다.',
-      'abra': '앉자마자 졸지만, 깨어나면 천재적 해결책 제시.',
-      'magnemite': '논리를 자기장처럼 끌어모으는 법리 자석.',
-      'geodude': '압박 면접에서도 절대 흔들리지 않는 강철 멘탈.',
-      'onix': '단단하게 법조문을 꿰뚫는 분석력 보유.',
-      'cubone': '혼자서도 묵묵히 공부하는 독학 마스터.',
-      'dratini': '언젠간 드래곤처럼 날아오를 예비 법조인.',
-      'pidgey': '이슈를 넓게 조망하는 높은 시야의 소유자.',
-      'rattata': '작고 빠르게 핵심을 파고드는 집중력 천재.',
-      'bellsprout': '스스로 성장하며 지식을 흡수하는 유형.',
-      'slowpoke': '느려 보이지만 결국 모두 따라잡는 반전형.'
+      'frogadier': '조용하지만 날렵하게 과제를 처리하는 닌자형.',
+      'hoothoot': '야간 공부에 특화된 올빼미형 로스쿨러.'
     };
 
-    // 이름을 해시해서 번호로 바꾸기 (랜덤 고정용)
+    // 랜덤용 포켓몬 설명 기본 추가
+    randomPool.forEach(pokemon => {
+      if (!descriptions[pokemon]) {
+        descriptions[pokemon] = `${nameMap[pokemon]}(이)는 로스쿨 생활에서도 독특한 능력을 발휘한다.`;
+      }
+    });
+
+    // 이름 해시 함수 (고정 랜덤용)
     function hashName(name) {
       let hash = 0;
       for (let i = 0; i < name.length; i++) {
-        hash += name.charCodeAt(i);
+        hash = (hash << 5) - hash + name.charCodeAt(i);
+        hash |= 0; // 32bit int
       }
-      return hash % randomPool.length;
+      return Math.abs(hash);
     }
 
-    // 검색 함수
     function search() {
-      const name = document.getElementById("nameInput").value.trim();
+      const name = document.getElementById('nameInput').value.trim();
       if (!name) return;
 
       let pokemon;
+
       if (assigned[name]) {
         pokemon = assigned[name];
       } else {
-        pokemon = randomPool[hashName(name)];
+        const index = hashName(name) % randomPool.length;
+        pokemon = randomPool[index];
       }
 
-      const description = descriptions[pokemon] || "설명이 없습니다.";
+      const koreanName = nameMap[pokemon] || pokemon;
+      const description = descriptions[pokemon] || '설명이 없습니다.';
       const imageUrl = `https://img.pokemondb.net/artwork/${pokemon}.jpg`;
 
-      document.getElementById("result").innerHTML = `
-        <h2>${name}님의 포켓몬은 ${pokemon.toUpperCase()}!</h2>
-        <img src="${imageUrl}" alt="${pokemon}" />
+      document.getElementById('result').innerHTML = `
+        <h2>${name}님의 포켓몬은 ${koreanName}!</h2>
+        <img src="${imageUrl}" alt="${koreanName}" />
         <p>${description}</p>
       `;
     }
