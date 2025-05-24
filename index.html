@@ -4,46 +4,115 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>강로 포켓몬 도감</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      text-align: center;
+      font-family: 'Noto Sans KR', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #f9fbe7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 2em;
-      background-color: #f0f8ff;
+      min-height: 100vh;
     }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    input[type="text"] {
+      padding: 0.6em;
+      border-radius: 0.5em;
+      border: 1px solid #ccc;
+      width: 200px;
+      font-size: 1em;
+    }
+
+    button {
+      margin-left: 0.5em;
+      padding: 0.6em 1em;
+      border-radius: 0.5em;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
     #pokemon-card {
       margin-top: 2em;
-      border: 1px solid #ccc;
-      padding: 1.5em;
+      border: none;
+      padding: 2em;
       border-radius: 1em;
-      background-color: #fff;
-      display: inline-block;
-      max-width: 300px;
+      background-color: #ffffff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      text-align: center;
+      max-width: 400px;
     }
-    img {
+
+    #pokemon-card img {
       width: 200px;
+      border-radius: 1em;
+    }
+
+    #ball-icon {
+      margin-top: 2em;
+      width: 100px;
+    }
+
+    .flex-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1em;
+      flex-wrap: wrap;
+    }
+
+    .name {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 1em;
+    }
+
+    .desc {
+      font-size: 1em;
+      margin-top: 0.5em;
+      color: #555;
     }
   </style>
 </head>
 <body>
   <h1>강로 포켓몬 도감</h1>
-  <p>이름을 입력하면 당신만의 로스쿨 포켓몬이 나타납니다!</p>
-  <input type="text" id="nameInput" placeholder="이름을 입력하세요" />
-  <button onclick="generatePokemon()">확인</button>
+  <div>
+    <input type="text" id="nameInput" placeholder="이름을 입력하세요" />
+    <button onclick="showPokemon()">조회</button>
+  </div>
 
-  <div id="pokemon-card" style="display:none;">
-    <h2 id="pokemon-name"></h2>
-    <img id="pokemon-img" src="" alt="" />
-    <p id="pokemon-description"></p>
+  <div id="ball-placeholder">
+    <img id="ball-icon" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="몬스터볼">
+  </div>
+
+  <div id="pokemon-card" style="display: none;">
+    <div class="flex-container">
+      <img id="pokemon-image" src="" alt="포켓몬 이미지" />
+      <img id="opened-ball" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball-open.png" alt="열린 포켓볼" width="64" />
+    </div>
+    <div class="name" id="pokemon-name"></div>
+    <div class="desc" id="pokemon-desc"></div>
   </div>
 
   <script>
-    const assignedPokemon = {
+    const nameToPokemon = {
       "박기범": "pikachu",
       "김민혁": "nosepass",
       "박서영": "ampharos",
       "김종현": "delibird",
-      "최영현": "kaiser",
+      "최영현": "kecleon",
       "이유진": "aipom",
       "김다은": "smoochum",
       "권채니": "xatu",
@@ -53,6 +122,28 @@
     };
 
     const pokemonData = {
+      "pikachu": ["피카츄", "기민하고 재치 있는 피카츄는 민법 판례를 번개처럼 정리해냅니다."],
+      "nosepass": ["코코파스", "항상 북쪽을 향해 학문적으로 흔들림 없는 코코파스입니다."],
+      "ampharos": ["전룡", "밝은 전등처럼 논리적 사고를 비추는 전룡입니다."],
+      "delibird": ["딜리버드", "선물처럼 지식을 전달하는 딜리버드는 조별 과제의 중심입니다."],
+      "kecleon": ["켈리몬", "상황에 맞게 전략을 바꾸는 유연한 사고의 켈리몬입니다."],
+      "aipom": ["에이팜", "장난기 많은 학습 태도로도 성적을 끌어올리는 에이팜입니다."],
+      "smoochum": ["루주라", "말끔하게 핵심을 정리하는 능력의 루주라입니다."],
+      "xatu": ["네이티오", "과거와 미래를 모두 보는 통찰력의 네이티오입니다."],
+      "gorebyss": ["분홍장이", "섬세한 판단으로 논리 전개를 이끄는 분홍장이입니다."],
+      "frogadier": ["개굴반장", "날렵하게 정보를 정리하는 개굴반장입니다."],
+      "hoothoot": ["부우부", "정확한 타이밍에 공부하는 계획형 부우부입니다."]
+    };
+
+    const allPokemon = [
+      "bulbasaur","ivysaur","venusaur","charmander","charmeleon","charizard","squirtle","wartortle","blastoise",
+      "caterpie","metapod","butterfree","weedle","kakuna","beedrill","pidgey","pidgeotto","pidgeot","rattata",
+      "raticate","spearow","fearow","ekans","arbok","sandshrew","sandslash","nidoran♀","nidorina","nidoqueen",
+      "nidoran♂","nidorino","nidoking","clefairy","clefable","vulpix","ninetales","jigglypuff","wigglytuff",
+      "zubat","golbat","oddish","gloom","vileplume","paras","parasect","venonat","venomoth","diglett","dugtrio"
+    ];
+
+    const pokemonDataExtended = {
       const pokemonData = {
   "bulbasaur": ["이상해씨", "조용히 자라지만 강한 이상해씨는 민법 조문을 하나씩 정복합니다."],
   "ivysaur": ["이상해풀", "법률 지식을 차근차근 키우는 이상해풀은 기초 법이론을 잘 다집니다."],
@@ -108,50 +199,47 @@
 
     };
 
-    const fullPool = Object.keys(pokemonData);
+    const nameToAssigned = {};
 
-    function hashNameToIndex(name) {
-      let hash = 0;
-      for (let i = 0; i < name.length; i++) {
-        hash = name.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      return Math.abs(hash) % fullPool.length;
-    }
-
-    function generatePokemon() {
+    function showPokemon() {
       const name = document.getElementById("nameInput").value.trim();
       if (!name) return;
 
-      let englishName;
-
-      if (assignedPokemon[name]) {
-        englishName = assignedPokemon[name];
-      } else {
-        englishName = fullPool[hashNameToIndex(name)];
+      let pkm = nameToPokemon[name];
+      if (!pkm) {
+        if (!nameToAssigned[name]) {
+          const hash = Array.from(name).reduce((a, c) => a + c.charCodeAt(0), 0);
+          pkm = allPokemon[hash % allPokemon.length];
+          nameToAssigned[name] = pkm;
+        } else {
+          pkm = nameToAssigned[name];
+        }
       }
 
-      const [koreanName, description] = pokemonData[englishName];
-      const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${getPokeID(englishName)}.png`;
+      const data = pokemonData[pkm] || pokemonDataExtended[pkm] || [pkm, "이 포켓몬은 아직 등록되지 않았습니다."];
+      const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${getPokeID(pkm)}.png`;
 
-      document.getElementById("pokemon-name").innerText = koreanName;
-      document.getElementById("pokemon-img").src = imgUrl;
-      document.getElementById("pokemon-description").innerText = description;
+      document.getElementById("pokemon-image").src = imageUrl;
+      document.getElementById("pokemon-name").textContent = data[0];
+      document.getElementById("pokemon-desc").textContent = data[1];
       document.getElementById("pokemon-card").style.display = "block";
+      document.getElementById("ball-placeholder").style.display = "none";
     }
 
     function getPokeID(name) {
-      const nameToID = {
-        "bulbasaur": 1, "ivysaur": 2, "venusaur": 3, "charmander": 4, "charmeleon": 5, "charizard": 6,
-        "squirtle": 7, "wartortle": 8, "blastoise": 9, "caterpie": 10, "metapod": 11, "butterfree": 12,
-        "weedle": 13, "kakuna": 14, "beedrill": 15, "pidgey": 16, "pidgeotto": 17, "pidgeot": 18,
-        "rattata": 19, "raticate": 20, "spearow": 21, "fearow": 22, "ekans": 23, "arbok": 24,
-        "pikachu": 25, "sandshrew": 27, "sandslash": 28, "nidoran♀": 29, "nidorina": 30, "nidoqueen": 31,
-        "nidoran♂": 32, "nidorino": 33, "nidoking": 34, "clefairy": 35, "clefable": 36, "vulpix": 37,
-        "ninetales": 38, "jigglypuff": 39, "wigglytuff": 40, "zubat": 41, "golbat": 42, "oddish": 43,
-        "gloom": 44, "vileplume": 45, "paras": 46, "parasect": 47, "venonat": 48, "venomoth": 49,
-        "diglett": 50, "dugtrio": 51
+      const ids = {
+        "bulbasaur":1, "ivysaur":2, "venusaur":3, "charmander":4, "charmeleon":5, "charizard":6,
+        "squirtle":7, "wartortle":8, "blastoise":9, "caterpie":10, "metapod":11, "butterfree":12,
+        "weedle":13, "kakuna":14, "beedrill":15, "pidgey":16, "pidgeotto":17, "pidgeot":18,
+        "rattata":19, "raticate":20, "spearow":21, "fearow":22, "ekans":23, "arbok":24,
+        "pikachu":25, "sandshrew":27, "sandslash":28, "nidoran♀":29, "nidorina":30, "nidoqueen":31,
+        "nidoran♂":32, "nidorino":33, "nidoking":34, "clefairy":35, "clefable":36, "vulpix":37,
+        "ninetales":38, "jigglypuff":39, "wigglytuff":40, "zubat":41, "golbat":42, "oddish":43,
+        "gloom":44, "vileplume":45, "paras":46, "parasect":47, "venonat":48, "venomoth":49,
+        "diglett":50, "dugtrio":51, "nosepass":299, "ampharos":181, "delibird":225,
+        "kecleon":352, "aipom":190, "smoochum":238, "xatu":178, "gorebyss":368, "frogadier":657, "hoothoot":163
       };
-      return nameToID[name] || 25;
+      return ids[name] || 1;
     }
   </script>
 </body>
