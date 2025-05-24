@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>강로 포켓몬 도감</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+      padding: 2rem;
+    }
+    input {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-left: 1rem;
+    }
+    .pokemon-card {
+      margin-top: 2rem;
+      border: 2px solid #ccc;
+      padding: 1rem;
+      display: inline-block;
+      background-color: white;
+    }
+    img {
+      width: 150px;
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>강로 포켓몬 도감</h1>
+  <input type="text" id="nameInput" placeholder="이름을 입력하세요" />
+  <button onclick="showPokemon()">도감 보기</button>
+
+  <div id="result" class="pokemon-card" style="display: none;">
+    <h2 id="pokemonName"></h2>
+    <img id="pokemonImage" src="" alt="포켓몬 이미지" />
+    <p id="pokemonDescription"></p>
+  </div>
+
+  <script>
+    const fixedAssignments = {
+      '박기범': 'pikachu',
+      '김민혁': 'nosepass',
+      '박서영': 'ampharos',
+      '김종현': 'delibird',
+      '최영현': 'keiser',
+      '이유진': 'aipom',
+      '김다은': 'smoochum',
+      '권채니': 'xatu',
+      '곽연희': 'gorebyss',
+      '이태윤': 'frogadier',
+      '오세리': 'hoothoot'
+    };
+
+    const descriptions = {
+      pikachu: '전기에너지를 방출해 조별 과제를 단숨에 끝낸다. 집중력이 흐려질 때마다 볼트태클로 의지를 재충전한다.',
+      nosepass: '항상 같은 방향을 바라보며 흐트러지지 않는다. 판례 정리 능력은 자기장처럼 강력하다.',
+      ampharos: '멀리 있는 친구에게 빛으로 자료를 공유한다. 야간 자율 학습의 수호신.',
+      delibird: '모든 동기에게 요약 노트를 전달하는 전설의 배달부. 하지만 가끔 본인 것도 까먹는다.',
+      keiser: '사법 시험 기출을 완벽하게 꿰뚫는 시야를 지녔다. 실전에서 강하다.',
+      aipom: '수업 시간마다 손을 번쩍 드는 활발한 질문러. 책장을 넘기는 속도는 누구보다 빠르다.',
+      smoochum: '감정 표현이 풍부해 토론 시간에 강하다. 조별 과제의 아이디어 뱅크.',
+      xatu: '미래를 내다보는 듯한 학습 스케줄링. 모든 리딩을 예습해 두었다.',
+      gorebyss: '조용하지만 깊이 있는 사고를 한다. 판례의 본질을 꿰뚫는 힘이 있다.',
+      frogadier: '민첩하게 자료를 찾아낸다. 실무형 문제에 강한 해결사.',
+      hoothoot: '야간 공부에 최적화된 생체 시계. 졸지 않고 케이스북을 끝까지 읽는다.'
+    };
+
+    const allPokemon = Object.keys(descriptions);
+    const assignedRandom = {};
+
+    function hashName(name) {
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return hash;
+    }
+
+    function getRandomPokemon(name) {
+      if (assignedRandom[name]) return assignedRandom[name];
+      const index = Math.abs(hashName(name)) % allPokemon.length;
+      const selected = allPokemon[index];
+      assignedRandom[name] = selected;
+      return selected;
+    }
+
+    function showPokemon() {
+      const name = document.getElementById("nameInput").value.trim();
+      if (!name) return;
+
+      const pokemon = fixedAssignments[name] || getRandomPokemon(name);
+      const imageUrl = `https://img.pokemondb.net/artwork/${pokemon}.jpg`;
+      const description = descriptions[pokemon] || "학습 유형이 분석되지 않았습니다.";
+
+      document.getElementById("pokemonName").innerText = `${pokemon.toUpperCase()} (${name})`;
+      document.getElementById("pokemonImage").src = imageUrl;
+      document.getElementById("pokemonDescription").innerText = description;
+      document.getElementById("result").style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
