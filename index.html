@@ -2,105 +2,144 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>강로 포켓몬 도감</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
   <style>
     body {
+      margin: 0; padding: 0;
       font-family: 'Noto Sans KR', sans-serif;
-      background: linear-gradient(135deg, #e0f7fa, #f9fbe7);
+      background: linear-gradient(135deg, #a0d8f7, #d0f0c0);
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2em;
       min-height: 100vh;
+      color: #333;
     }
-
     h1 {
-      color: #2c3e50;
+      margin-top: 2rem;
+      font-size: 2.5rem;
+      color: #23475e;
+      text-shadow: 1px 1px 3px #a1c6e7;
     }
-
-    input[type="text"] {
-      padding: 0.6em;
-      border-radius: 0.5em;
-      border: 1px solid #ccc;
-      width: 200px;
-      font-size: 1em;
+    #input-area {
+      margin: 1.5rem 0 0;
+      display: flex;
+      gap: 0.5rem;
     }
-
+    input[type=text] {
+      font-size: 1.1rem;
+      padding: 0.6rem 1rem;
+      border-radius: 12px;
+      border: 2px solid #4a90e2;
+      outline: none;
+      width: 220px;
+      transition: border-color 0.3s;
+    }
+    input[type=text]:focus {
+      border-color: #2b6cb0;
+      box-shadow: 0 0 5px #2b6cb0;
+    }
     button {
-      margin-left: 0.5em;
-      padding: 0.6em 1em;
-      border-radius: 0.5em;
-      background-color: #4CAF50;
+      background-color: #2b6cb0;
+      border: none;
+      border-radius: 12px;
       color: white;
-      border: none;
-      font-size: 1em;
+      font-weight: 600;
       cursor: pointer;
+      padding: 0 20px;
+      font-size: 1.1rem;
+      transition: background-color 0.3s;
     }
-
     button:hover {
-      background-color: #45a049;
+      background-color: #1d4570;
     }
-
-    #pokemon-card {
-      margin-top: 2em;
-      border: none;
-      padding: 2em;
-      border-radius: 1em;
-      background-color: #ffffff;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+    #ball-placeholder, #pokemon-card {
+      margin-top: 3rem;
+      width: 360px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      padding: 1.8rem 2rem;
       text-align: center;
-      max-width: 400px;
+      animation: fadeIn 0.6s ease;
     }
-
-    #pokemon-card img {
-      width: 200px;
-      border-radius: 1em;
+    #ball-placeholder img {
+      width: 150px;
+      cursor: default;
+      user-select: none;
     }
-
-    #ball-icon {
-      margin-top: 2em;
-      width: 100px;
+    #pokemon-card {
+      display: none;
     }
-
     .flex-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 1em;
-      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
     }
-
+    #pokemon-image {
+      width: 160px;
+      border-radius: 18px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    #opened-ball {
+      width: 70px;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+      user-select: none;
+    }
     .name {
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-top: 1em;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2b3a67;
+      margin-bottom: 0.5rem;
+      text-shadow: 1px 1px 2px #d6d8e7;
     }
-
     .desc {
-      font-size: 1em;
-      margin-top: 0.5em;
+      font-size: 1.1rem;
+      line-height: 1.5;
       color: #555;
+      white-space: pre-wrap;
+      user-select: text;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(15px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    /* 모바일 대응 */
+    @media (max-width: 400px) {
+      #ball-placeholder, #pokemon-card {
+        width: 90vw;
+        padding: 1rem;
+      }
+      #pokemon-image {
+        width: 130px;
+      }
+      #opened-ball {
+        width: 60px;
+      }
+      input[type=text] {
+        width: 140px;
+      }
     }
   </style>
 </head>
 <body>
   <h1>강로 포켓몬 도감</h1>
-  <div>
-    <input type="text" id="nameInput" placeholder="이름을 입력하세요" />
+  <div id="input-area">
+    <input id="nameInput" type="text" placeholder="이름을 입력하세요" />
     <button onclick="showPokemon()">조회</button>
   </div>
 
   <div id="ball-placeholder">
-    <img id="ball-icon" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="몬스터볼">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="몬스터볼" />
   </div>
 
-  <div id="pokemon-card" style="display: none;">
+  <div id="pokemon-card">
     <div class="flex-container">
       <img id="pokemon-image" src="" alt="포켓몬 이미지" />
-      <img id="opened-ball" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball-open.png" alt="열린 포켓볼" width="64" />
+      <img id="opened-ball" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball-open.png" alt="열린 포켓볼" />
     </div>
     <div class="name" id="pokemon-name"></div>
     <div class="desc" id="pokemon-desc"></div>
@@ -122,17 +161,17 @@
     };
 
     const pokemonData = {
-      "pikachu": ["피카츄", "기민하고 재치 있는 피카츄는 민법 판례를 번개처럼 정리해냅니다."],
-      "nosepass": ["코코파스", "항상 북쪽을 향해 학문적으로 흔들림 없는 코코파스입니다."],
-      "ampharos": ["전룡", "밝은 전등처럼 논리적 사고를 비추는 전룡입니다."],
-      "delibird": ["딜리버드", "선물처럼 지식을 전달하는 딜리버드는 조별 과제의 중심입니다."],
-      "kecleon": ["켈리몬", "상황에 맞게 전략을 바꾸는 유연한 사고의 켈리몬입니다."],
-      "aipom": ["에이팜", "장난기 많은 학습 태도로도 성적을 끌어올리는 에이팜입니다."],
-      "smoochum": ["루주라", "말끔하게 핵심을 정리하는 능력의 루주라입니다."],
-      "xatu": ["네이티오", "과거와 미래를 모두 보는 통찰력의 네이티오입니다."],
-      "gorebyss": ["분홍장이", "섬세한 판단으로 논리 전개를 이끄는 분홍장이입니다."],
-      "frogadier": ["개굴반장", "날렵하게 정보를 정리하는 개굴반장입니다."],
-      "hoothoot": ["부우부", "정확한 타이밍에 공부하는 계획형 부우부입니다."]
+      "pikachu": ["피카츄", "번개같이 빠른 법률 논리 정리와 민법 사례 분석에 능합니다."],
+      "nosepass": ["코코파스", "항상 바른 방향으로 학문을 탐구하며 흔들림 없는 집중력을 자랑합니다."],
+      "ampharos": ["전룡", "어두운 법률의 미궁 속에서도 명확한 해답을 비추는 빛과 같습니다."],
+      "delibird": ["딜리버드", "중요한 법률 지식을 동료에게 정확히 전달하는 책임감 있는 모습입니다."],
+      "kecleon": ["켈리몬", "상황에 맞게 논리를 유연하게 바꾸며 다양한 법적 관점을 이해합니다."],
+      "aipom": ["에이팜", "호기심 많고 창의적인 생각으로 독특한 법 해석을 시도합니다."],
+      "smoochum": ["루주라", "복잡한 법 조항을 간결하게 요약하는 능력이 뛰어납니다."],
+      "xatu": ["네이티오", "과거 판례와 미래 전망을 모두 보는 통찰력을 갖추고 있습니다."],
+      "gorebyss": ["분홍장이", "세심한 관찰력으로 법률 문서의 작은 부분도 놓치지 않습니다."],
+      "frogadier": ["개굴반장", "민첩한 사고와 신속한 문제 해결 능력을 발휘합니다."],
+      "hoothoot": ["부우부", "체계적인 계획을 세워 꾸준히 학습하는 신중한 자세가 돋보입니다."]
     };
 
     const allPokemon = [
@@ -143,103 +182,49 @@
       "zubat","golbat","oddish","gloom","vileplume","paras","parasect","venonat","venomoth","diglett","dugtrio"
     ];
 
-    const pokemonDataExtended = {
-      const pokemonData = {
-  "bulbasaur": ["이상해씨", "조용히 자라지만 강한 이상해씨는 민법 조문을 하나씩 정복합니다."],
-  "ivysaur": ["이상해풀", "법률 지식을 차근차근 키우는 이상해풀은 기초 법이론을 잘 다집니다."],
-  "venusaur": ["이상해꽃", "체계적인 사고의 대명사, 이상해꽃은 논리적인 판례 분석에 능합니다."],
-  "charmander": ["파이리", "뜨거운 열정을 지닌 파이리는 형법에 대한 열망이 넘칩니다."],
-  "charmeleon": ["리자드", "형법을 정복하기 위해 타오르는 리자드는 강의 복습을 철저히 합니다."],
-  "charizard": ["리자몽", "전략적 사고가 뛰어난 리자몽은 변호사 시험에서 고득점을 노립니다."],
-  "squirtle": ["꼬부기", "냉철한 판단의 꼬부기는 행정법 판례에 능숙합니다."],
-  "wartortle": ["어니부기", "체계적인 학습 태도를 가진 어니부기는 헌법 개념 정리에 강합니다."],
-  "blastoise": ["거북왕", "조용한 카리스마로 조별과제를 이끄는 거북왕은 팀플의 리더입니다."],
-  "caterpie": ["캐터피", "꾸준히 조문을 정독하는 캐터피는 기초가 튼튼한 학생입니다."],
-  "metapod": ["단데기", "아직은 준비 중이지만 곧 큰 잠재력을 터뜨릴 단데기입니다."],
-  "butterfree": ["버터플", "판례를 자유자재로 날아다니는 버터플은 직관력의 천재입니다."],
-  "weedle": ["뿔충이", "작지만 성실한 뿔충이는 매일 복습을 잊지 않습니다."],
-  "kakuna": ["딱충이", "법전 암기에 몰두한 딱충이는 곧 실력을 터뜨릴 준비 중입니다."],
-  "beedrill": ["독침붕", "날카로운 논리 전개로 상대방을 설득하는 독침붕입니다."],
-  "pidgey": ["구구", "꾸준히 시험문제를 푸는 구구는 로스쿨 입시의 숨은 고수입니다."],
-  "pidgeotto": ["피죤", "기본기를 다진 피죤은 학습의 날개를 넓혀가고 있습니다."],
-  "pidgeot": ["피죤투", "법학 서적을 꿰뚫는 날카로움을 가진 피죤투입니다."],
-  "rattata": ["꼬렛", "빈틈없는 꼬렛은 기출문제를 수집하고 분석하는 데 강합니다."],
-  "raticate": ["레트라", "법 조문 간 연결을 정리해 내는 데 탁월한 레트라입니다."],
-  "spearow": ["깨비참", "날렵하게 학습 포인트를 집어내는 깨비참입니다."],
-  "fearow": ["깨비드릴조", "조문과 판례 사이를 드릴처럼 뚫고 지나가는 깨비드릴조입니다."],
-  "ekans": ["아보", "유연한 사고를 통해 여러 해석을 시도하는 아보입니다."],
-  "arbok": ["아보크", "강한 집중력으로 한 번 암기하면 절대 잊지 않는 아보크입니다."],
-  "pikachu": ["피카츄", "기민하고 재치 있는 피카츄는 민법 판례를 번개처럼 정리해냅니다."],
-  "sandshrew": ["모래두지", "조용히 문제를 파고드는 모래두지는 집중력의 화신입니다."],
-  "sandslash": ["고지", "단단한 고지는 기본서를 철저히 반복하며 탄탄한 실력을 갖췄습니다."],
-  "nidoran♀": ["니드런♀", "조용하지만 강한 의지를 가진 니드런♀은 묵묵히 공부합니다."],
-  "nidorina": ["니드리나", "기초 개념부터 심화까지 섭렵 중인 니드리나입니다."],
-  "nidoqueen": ["니드퀸", "모든 조문을 장악한 니드퀸은 학습의 여왕입니다."],
-  "nidoran♂": ["니드런♂", "성실한 학습 태도로 조문을 정리하는 니드런♂입니다."],
-  "nidorino": ["니드리노", "판례 정리에 열중인 니드리노는 서브노트의 달인입니다."],
-  "nidoking": ["니드킹", "학습 전략과 스피드를 겸비한 니드킹은 로스쿨생의 롤모델입니다."],
-  "clefairy": ["삐삐", "조용한 듯 귀여운 삐삐는 이해 중심 학습을 선호합니다."],
-  "clefable": ["픽시", "고차원적 사고로 헌법 해석을 리드하는 픽시입니다."],
-  "vulpix": ["식스테일", "우아한 학습 스타일을 가진 식스테일은 글쓰기에도 강합니다."],
-  "ninetales": ["나인테일", "오랜 시간 집중하는 나인테일은 장시간 시험도 끄떡없습니다."],
-  "jigglypuff": ["푸린", "노래하듯 공부하는 푸린은 헌법을 리듬감 있게 외웁니다."],
-  "wigglytuff": ["푸크린", "포근한 분위기지만 조문 해석은 날카로운 푸크린입니다."],
-  "zubat": ["주뱃", "어둠 속에서도 학습 루트를 찾아내는 주뱃입니다."],
-  "golbat": ["골뱃", "직관력 있는 골뱃은 시험의 핵심을 정확히 찔러냅니다."],
-  "oddish": ["뚜벅쵸", "차분한 학습을 즐기는 뚜벅쵸는 기초 개념에 충실합니다."],
-  "gloom": ["냄새꼬", "조금 느리지만 성실하게 개념을 반복하는 냄새꼬입니다."],
-  "vileplume": ["라플레시아", "화려한 암기력으로 판례를 꿰는 라플레시아입니다."],
-  "paras": ["파라스", "기출 문제를 수집하고 분석하는 파라스입니다."],
-  "parasect": ["파라섹트", "파라섹트는 판례와 조문을 연결하는 데 능숙합니다."],
-  "venonat": ["콘팡", "꼼꼼한 학습 스타일을 가진 콘팡은 암기력도 탁월합니다."],
-  "venomoth": ["도나리", "도나리는 강의 흐름을 빠르게 이해하는 능력이 뛰어납니다."],
-  "diglett": ["디그다", "짧고 굵은 집중력의 디그다는 시험 전날 복습에 강합니다."],
-  "dugtrio": ["닥트리오", "세 갈래 시각으로 조문을 분석하는 닥트리오는 통찰력이 뛰어납니다."]
-};
-
+    const extendedData = {
+      // 예시로 몇 개만 넣음, 필요시 확장 가능
+      "bulbasaur": ["이상해씨", "기본을 탄탄히 하여 기초 법률 이론을 익히는 데 강점이 있습니다."],
+      "charizard": ["리자몽", "강력한 열정과 의지로 어려운 법적 문제도 해결합니다."],
+      "squirtle": ["꼬부기", "차분하고 체계적으로 공부하며 신중하게 판단합니다."],
+      // 추가로 더 넣어도 됨
     };
 
     const nameToAssigned = {};
 
     function showPokemon() {
-      const name = document.getElementById("nameInput").value.trim();
-      if (!name) return;
+      const inputName = document.getElementById("nameInput").value.trim();
+      if (!inputName) {
+        alert("이름을 입력해 주세요.");
+        return;
+      }
 
-      let pkm = nameToPokemon[name];
+      let pkm = nameToPokemon[inputName];
+
       if (!pkm) {
-        if (!nameToAssigned[name]) {
-          const hash = Array.from(name).reduce((a, c) => a + c.charCodeAt(0), 0);
+        if (!nameToAssigned[inputName]) {
+          // 이름 기반 해시로 랜덤 포켓몬 할당 (일관성 유지)
+          const hash = Array.from(inputName).reduce((a, c) => a + c.charCodeAt(0), 0);
           pkm = allPokemon[hash % allPokemon.length];
-          nameToAssigned[name] = pkm;
+          nameToAssigned[inputName] = pkm;
         } else {
-          pkm = nameToAssigned[name];
+          pkm = nameToAssigned[inputName];
         }
       }
 
-      const data = pokemonData[pkm] || pokemonDataExtended[pkm] || [pkm, "이 포켓몬은 아직 등록되지 않았습니다."];
-      const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${getPokeID(pkm)}.png`;
+      const data = pokemonData[pkm] || extendedData[pkm] || [pkm, "아직 등록되지 않은 포켓몬입니다."];
 
-      document.getElementById("pokemon-image").src = imageUrl;
+      // 이미지 URL은 포켓몬 이름(영어 소문자)
+      const imgUrl = `https://img.pokemondb.net/artwork/large/${pkm}.jpg`;
+
+      // 화면 전환
+      document.getElementById("ball-placeholder").style.display = "none";
+      document.getElementById("pokemon-card").style.display = "block";
+
+      document.getElementById("pokemon-image").src = imgUrl;
+      document.getElementById("pokemon-image").alt = data[0];
       document.getElementById("pokemon-name").textContent = data[0];
       document.getElementById("pokemon-desc").textContent = data[1];
-      document.getElementById("pokemon-card").style.display = "block";
-      document.getElementById("ball-placeholder").style.display = "none";
-    }
-
-    function getPokeID(name) {
-      const ids = {
-        "bulbasaur":1, "ivysaur":2, "venusaur":3, "charmander":4, "charmeleon":5, "charizard":6,
-        "squirtle":7, "wartortle":8, "blastoise":9, "caterpie":10, "metapod":11, "butterfree":12,
-        "weedle":13, "kakuna":14, "beedrill":15, "pidgey":16, "pidgeotto":17, "pidgeot":18,
-        "rattata":19, "raticate":20, "spearow":21, "fearow":22, "ekans":23, "arbok":24,
-        "pikachu":25, "sandshrew":27, "sandslash":28, "nidoran♀":29, "nidorina":30, "nidoqueen":31,
-        "nidoran♂":32, "nidorino":33, "nidoking":34, "clefairy":35, "clefable":36, "vulpix":37,
-        "ninetales":38, "jigglypuff":39, "wigglytuff":40, "zubat":41, "golbat":42, "oddish":43,
-        "gloom":44, "vileplume":45, "paras":46, "parasect":47, "venonat":48, "venomoth":49,
-        "diglett":50, "dugtrio":51, "nosepass":299, "ampharos":181, "delibird":225,
-        "kecleon":352, "aipom":190, "smoochum":238, "xatu":178, "gorebyss":368, "frogadier":657, "hoothoot":163
-      };
-      return ids[name] || 1;
     }
   </script>
 </body>
