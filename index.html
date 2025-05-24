@@ -33,79 +33,26 @@
     };
 
     const randomPool = [
-      'bulbasaur', 'charmander', 'squirtle', 'eevee', 'jigglypuff',
-      'snorlax', 'meowth', 'psyduck', 'gengar', 'machop',
-      'abra', 'magnemite', 'geodude', 'onix', 'cubone',
-      'dratini', 'pidgey', 'rattata', 'bellsprout', 'slowpoke',
-      'growlithe', 'doduo', 'seel', 'grimer', 'shellder',
-      'krabby', 'voltorb', 'exeggcute', 'koffing', 'tangela',
-      'horsea', 'goldeen', 'staryu', 'scyther', 'pinsir',
-      'tauros', 'lapras', 'ditto', 'omanyte', 'kabuto',
-      'aerodactyl', 'togepi', 'mareep', 'marill', 'phanpy',
-      'treecko', 'torchic', 'mudkip', 'ralts', 'slakoth'
+      'bulbasaur','charmander','squirtle','eevee','jigglypuff','snorlax','meowth','psyduck','gengar','machop',
+      'abra','magnemite','geodude','onix','cubone','dratini','pidgey','rattata','bellsprout','slowpoke',
+      'growlithe','doduo','seel','grimer','shellder','krabby','voltorb','exeggcute','koffing','tangela',
+      'horsea','goldeen','staryu','scyther','pinsir','tauros','lapras','ditto','omanyte','kabuto',
+      'aerodactyl','togepi','mareep','marill','phanpy','treecko','torchic','mudkip','ralts','slakoth'
     ];
 
     const nameMap = {
-      'pikachu': '피카츄',
-      'nosepass': '코코파스',
-      'ampharos': '전룡',
-      'delibird': '딜리버드',
-      'keiser': '카이저',
-      'aipom': '에이팜',
-      'smoochum': '뽀송송',
-      'xatu': '네이티오',
-      'gorebyss': '분홍장이',
-      'frogadier': '개굴반장',
-      'hoothoot': '부우부',
-      'bulbasaur': '이상해씨',
-      'charmander': '파이리',
-      'squirtle': '꼬부기',
-      'eevee': '이브이',
-      'jigglypuff': '푸린',
-      'snorlax': '잠만보',
-      'meowth': '나옹',
-      'psyduck': '고라파덕',
-      'gengar': '팬텀',
-      'machop': '알통몬',
-      'abra': '캐이시',
-      'magnemite': '코일',
-      'geodude': '꼬마돌',
-      'onix': '롱스톤',
-      'cubone': '탕구리',
-      'dratini': '미뇽',
-      'pidgey': '구구',
-      'rattata': '꼬렛',
-      'bellsprout': '뚜벅쵸',
-      'slowpoke': '야돈',
-      'growlithe': '가디',
-      'doduo': '두두',
-      'seel': '쥬쥬',
-      'grimer': '질퍽이',
-      'shellder': '셸러',
-      'krabby': '크랩',
-      'voltorb': '찌리리공',
-      'exeggcute': '아라리',
-      'koffing': '또가스',
-      'tangela': '덩쿠리',
-      'horsea': '쏘드라',
-      'goldeen': '콘치',
-      'staryu': '별가사리',
-      'scyther': '스라크',
-      'pinsir': '쁘사이저',
-      'tauros': '켄타로스',
-      'lapras': '라프라스',
-      'ditto': '메타몽',
-      'omanyte': '암나이트',
-      'kabuto': '투구',
-      'aerodactyl': '프테라',
-      'togepi': '토게피',
-      'mareep': '메리프',
-      'marill': '마릴',
-      'phanpy': '코코리',
-      'treecko': '나무지기',
-      'torchic': '아차모',
-      'mudkip': '물짱이',
-      'ralts': '랄토스',
+      'pikachu': '피카츄', 'nosepass': '코코파스', 'ampharos': '전룡', 'delibird': '딜리버드', 'keiser': '카이저',
+      'aipom': '에이팜', 'smoochum': '뽀송송', 'xatu': '네이티오', 'gorebyss': '분홍장이', 'frogadier': '개굴반장',
+      'hoothoot': '부우부', 'bulbasaur': '이상해씨', 'charmander': '파이리', 'squirtle': '꼬부기', 'eevee': '이브이',
+      'jigglypuff': '푸린', 'snorlax': '잠만보', 'meowth': '나옹', 'psyduck': '고라파덕', 'gengar': '팬텀',
+      'machop': '알통몬', 'abra': '캐이시', 'magnemite': '코일', 'geodude': '꼬마돌', 'onix': '롱스톤',
+      'cubone': '탕구리', 'dratini': '미뇽', 'pidgey': '구구', 'rattata': '꼬렛', 'bellsprout': '뚜벅쵸',
+      'slowpoke': '야돈', 'growlithe': '가디', 'doduo': '두두', 'seel': '쥬쥬', 'grimer': '질퍽이',
+      'shellder': '셸러', 'krabby': '크랩', 'voltorb': '찌리리공', 'exeggcute': '아라리', 'koffing': '또가스',
+      'tangela': '덩쿠리', 'horsea': '쏘드라', 'goldeen': '콘치', 'staryu': '별가사리', 'scyther': '스라크',
+      'pinsir': '쁘사이저', 'tauros': '켄타로스', 'lapras': '라프라스', 'ditto': '메타몽', 'omanyte': '암나이트',
+      'kabuto': '투구', 'aerodactyl': '프테라', 'togepi': '토게피', 'mareep': '메리프', 'marill': '마릴',
+      'phanpy': '코코리', 'treecko': '나무지기', 'torchic': '아차모', 'mudkip': '물짱이', 'ralts': '랄토스',
       'slakoth': '게을로'
     };
 
@@ -140,18 +87,18 @@
       'pidgey': '논리적 전개로 조리 있게 토론을 이끈다.',
       'rattata': '집중력을 잃지 않고 끈기 있게 문제풀이 한다.',
       'bellsprout': '한 걸음씩 착실히 단계별로 공부한다.',
-      'slowpoke': '느리지만 정확한 암기를 중시한다.',
-      'growlithe': '열정적으로 팀스터디를 이끈다.',
-      'doduo': '빠른 판단력으로 시험 시간 분배를 조절한다.',
-      'seel': '세세한 부분까지 놓치지 않는 꼼꼼함.',
-      'grimer': '어려운 사례도 유연하게 해석한다.',
-      'shellder': '상황에 맞춰 전략을 바꾸는 융통성.',
-      'krabby': '문제의 핵심을 재빨리 파악한다.',
-      'voltorb': '집중력을 끌어올리는 명상법 전문가.',
-      'exeggcute': '집요한 탐구로 숨겨진 진실을 밝혀낸다.',
-      'koffing': '스트레스 상황에서도 침착함 유지.',
-      'tangela': '아이디어 발상을 자유롭게 펼친다.',
-      'horsea': '꾸준한 복습으로 기억을 강화한다.',
+      'slowpoke': '느리지만 정확한 암기로 실수를 줄인다.',
+      'growlithe': '의협심으로 팀 스터디에 기여한다.',
+      'doduo': '두 가지 과목을 동시에 잘 해내는 균형 잡힌 학습자.',
+      'seel': '차분하게 기억을 정리하며 떠올린다.',
+      'grimer': '뒤죽박죽 정보를 정리해내는 능력자.',
+      'shellder': '필요한 지식만 쏙쏙 뽑아 정리한다.',
+      'krabby': '빠른 손놀림으로 노트를 완벽하게 정리한다.',
+      'voltorb': '단기간 벼락치기에 능하다.',
+      'exeggcute': '복습으로 기억을 강화한다.',
+      'koffing': '독창적 시각으로 기존 해석에 도전한다.',
+      'tangela': '엉킨 정보를 쉽게 풀어내는 정리의 달인.',
+      'horsea': '집중력 있게 읽고 요약하는 능력이 뛰어나다.',
       'goldeen': '세심한 계획으로 시간관리를 철저히 한다.',
       'staryu': '여러 시각에서 문제를 바라본다.',
       'scyther': '빠르고 정확한 문제 해결 능력.',
@@ -173,14 +120,21 @@
       'slakoth': '휴식도 공부의 일부임을 잘 안다.'
     };
 
-    // 저장된 랜덤 배정 저장소 (브라우저 로컬저장소 사용)
-    const storageKey = '강로포켓몬도감_랜덤배정';
-
-    // 기존 배정 불러오기
-    let randomAssignments = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    const idMap = {
+      'pikachu': 25, 'nosepass': 299, 'ampharos': 181, 'delibird': 225, 'keiser': 230, 'aipom': 190,
+      'smoochum': 238, 'xatu': 178, 'gorebyss': 368, 'frogadier': 657, 'hoothoot': 163,
+      'bulbasaur': 1, 'charmander': 4, 'squirtle': 7, 'eevee': 133, 'jigglypuff': 39, 'snorlax': 143,
+      'meowth': 52, 'psyduck': 54, 'gengar': 94, 'machop': 66, 'abra': 63, 'magnemite': 81,
+      'geodude': 74, 'onix': 95, 'cubone': 104, 'dratini': 147, 'pidgey': 16, 'rattata': 19,
+      'bellsprout': 69, 'slowpoke': 79, 'growlithe': 58, 'doduo': 84, 'seel': 86, 'grimer': 88,
+      'shellder': 90, 'krabby': 98, 'voltorb': 100, 'exeggcute': 102, 'koffing': 109, 'tangela': 114,
+      'horsea': 116, 'goldeen': 118, 'staryu': 120, 'scyther': 123, 'pinsir': 127, 'tauros': 128,
+      'lapras': 131, 'ditto': 132, 'omanyte': 138, 'kabuto': 140, 'aerodactyl': 142, 'togepi': 175,
+      'mareep': 179, 'marill': 183, 'phanpy': 231, 'treecko': 252, 'torchic': 255, 'mudkip': 258,
+      'ralts': 280, 'slakoth': 287
+    };
 
     function hashString(str) {
-      // 간단 해시 함수 (결과는 음수가 나올 수 있음)
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -188,84 +142,35 @@
       return hash;
     }
 
-    function getRandomPokemonForName(name) {
-      if (randomAssignments[name]) {
-        return randomAssignments[name];
-      }
-      // 해시값으로 인덱스 생성해 일정 포켓몬 배정
-      let hash = Math.abs(hashString(name));
-      let index = hash % randomPool.length;
-      let poke = randomPool[index];
-      // 중복 배정 방지: 만약 이미 다른 이름에 같은 포켓몬 배정됐으면 다른 인덱스 탐색
-      let tried = new Set();
-      while (Object.values(randomAssignments).includes(poke) && tried.size < randomPool.length) {
-        index = (index + 1) % randomPool.length;
-        poke = randomPool[index];
-        tried.add(poke);
-      }
-      randomAssignments[name] = poke;
-      localStorage.setItem(storageKey, JSON.stringify(randomAssignments));
-      return poke;
+    function getPokemon(name) {
+      return assigned[name] || getRandomPokemon(name);
+    }
+
+    function getRandomPokemon(name) {
+      const storageKey = '도감랜덤배정';
+      const assignedRandoms = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      if (assignedRandoms[name]) return assignedRandoms[name];
+      const index = Math.abs(hashString(name)) % randomPool.length;
+      const chosen = randomPool[index];
+      assignedRandoms[name] = chosen;
+      localStorage.setItem(storageKey, JSON.stringify(assignedRandoms));
+      return chosen;
     }
 
     function search() {
-      const name = document.getElementById('nameInput').value.trim();
-      if (!name) {
-        alert('이름을 입력하세요.');
-        return;
-      }
-      let pokemonKey;
-      if (assigned[name]) {
-        pokemonKey = assigned[name];
-      } else {
-        pokemonKey = getRandomPokemonForName(name);
-      }
-      const koreanName = nameMap[pokemonKey] || pokemonKey;
-      const description = descriptions[pokemonKey] || '공부하는 포켓몬입니다.';
-      const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${getPokemonId(pokemonKey)}.png`;
-
-      const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = `
-        <h2>${name} 님의 포켓몬: ${koreanName}</h2>
-        <img src="${imageUrl}" alt="${koreanName}" />
-        <p>${description}</p>
+      const input = document.getElementById('nameInput').value.trim();
+      if (!input) return;
+      const key = getPokemon(input);
+      const imgId = idMap[key] || 25;
+      const korName = nameMap[key] || key;
+      const desc = descriptions[key] || '이 포켓몬은 열심히 공부합니다.';
+      const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${imgId}.png`;
+      document.getElementById('result').innerHTML = `
+        <h2>${input} 님의 포켓몬: ${korName}</h2>
+        <img src="${imgUrl}" alt="${korName}" />
+        <p>${desc}</p>
       `;
     }
-
-    // 포켓몬 이름으로 ID 매핑 (PokeAPI 기준 번호)
-    function getPokemonId(name) {
-      const pokeIds = {
-        'bulbasaur': 1, 'ivysaur': 2, 'venusaur': 3, 'charmander': 4,
-        'charmeleon': 5, 'charizard': 6, 'squirtle': 7, 'wartortle': 8,
-        'blastoise': 9, 'caterpie': 10, 'metapod': 11, 'butterfree': 12,
-        'weedle': 13, 'kakuna': 14, 'beedrill': 15, 'pidgey': 16,
-        'pidgeotto': 17, 'pidgeot': 18, 'rattata': 19, 'raticate': 20,
-        'spearow': 21, 'fearow': 22, 'ekans': 23, 'arbok': 24,
-        'pikachu': 25, 'raichu': 26, 'sandshrew': 27, 'sandslash': 28,
-        'nidoran-f': 29, 'nidorina': 30, 'nidoqueen': 31, 'nidoran-m': 32,
-        'nidorino': 33, 'nidoking': 34, 'clefairy': 35, 'clefable': 36,
-        'vulpix': 37, 'ninetales': 38, 'jigglypuff': 39, 'wigglytuff': 40,
-        'zubat': 41, 'golbat': 42, 'oddish': 43, 'gloom': 44, 'vileplume': 45,
-        'paras': 46, 'parasect': 47, 'venonat': 48, 'venomoth': 49, 'diglett': 50,
-        'dugtrio': 51, 'meowth': 52, 'persian': 53, 'psyduck': 54, 'golduck': 55,
-        'mankey': 56, 'primeape': 57, 'growlithe': 58, 'arcanine': 59,
-        'poliwag': 60, 'poliwhirl': 61, 'poliwrath': 62, 'abra': 63,
-        'kadabra': 64, 'alakazam': 65, 'machop': 66, 'machoke': 67, 'machamp': 68,
-        'bellsprout': 69, 'weepinbell': 70, 'victreebel': 71, 'tentacool': 72,
-        'tentacruel': 73, 'geodude': 74, 'graveler': 75, 'golem': 76,
-        'ponyta': 77, 'rapidash': 78, 'slowpoke': 79, 'slowbro': 80,
-        'magnemite': 81, 'magneton': 82, 'farfetchd': 83, 'doduo': 84,
-        'dodrio': 85, 'seel': 86, 'dewgong': 87, 'grimer': 88, 'muk': 89,
-        'shellder': 90, 'cloyster': 91, 'gastly': 92, 'haunter': 93, 'gengar': 94,
-        'onix': 95, 'drowzee': 96, 'hypno': 97, 'krabby': 98, 'kingler': 99,
-        'voltorb': 100, 'electrode': 101, 'exeggcute': 102, 'exeggutor': 103,
-        'cubone': 104, 'marowak': 105, 'hitmonlee': 106, 'hitmonchan': 107,
-        'lickitung': 108, 'koffing': 109, 'weezing': 110, 'rhyhorn': 111,
-        'rhydon': 112, 'chansey': 113, 'tangela': 114, 'kangaskhan': 115,
-        'horsea': 116, 'seadra': 117, 'goldeen': 118, 'seaking': 119,
-        'staryu': 120, 'starmie': 121, 'mr-mime': 122, 'scyther': 123,
-        'jynx': 124, 'electabuzz': 125, 'magmar': 126, 'pinsir': 127,
-        'tauros': 128, 'magikarp': 129, 'gyarados': 130, 'lapras': 131,
-        'ditto': 132, 'eevee': 133, 'vaporeon': 134, 'jolteon': 135,
-        'flareon': 136, 'porygon': 137, 'omanyte': 138, 'omastar': 139,
-        'kabuto': 140, 'kabutops': 141, 'aerodactyl': 142, 'snorlax': 143
+  </script>
+</body>
+</html>
