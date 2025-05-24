@@ -18,6 +18,7 @@
   <div id="result"></div>
 
   <script>
+    // 지정된 이름 → 포켓몬 고정
     const assigned = {
       '박기범': 'pikachu',
       '김민혁': 'nosepass',
@@ -32,6 +33,15 @@
       '오세리': 'hoothoot'
     };
 
+    // 랜덤 할당용 포켓몬 리스트
+    const randomPool = [
+      'bulbasaur', 'charmander', 'squirtle', 'eevee', 'jigglypuff',
+      'snorlax', 'meowth', 'psyduck', 'gengar', 'machop',
+      'abra', 'magnemite', 'geodude', 'onix', 'cubone',
+      'dratini', 'pidgey', 'rattata', 'bellsprout', 'slowpoke'
+    ];
+
+    // 모든 포켓몬 설명 모음
     const descriptions = {
       'pikachu': '피카츄는 집중력을 번개처럼 빠르게 모아 단기 기억을 강화한다.',
       'nosepass': '노즈패스는 시험 방향을 절대 잃지 않는다. 항상 진로가 정해져 있다.',
@@ -43,29 +53,51 @@
       'xatu': '미래의 판례까지 내다보는 예지력의 포켓몬.',
       'gorebyss': '깊이 파고드는 분석으로 교수의 질문을 무력화시킨다.',
       'frogadier': '조용하지만 날렵하게 과제를 처리하는 닌자 스타일.',
-      'hoothoot': '야간 공부에 특화된 올빼미형 로스쿨러.'
+      'hoothoot': '야간 공부에 특화된 올빼미형 로스쿨러.',
+      'bulbasaur': '기초 개념부터 차근차근 쌓는 튼튼한 학습자.',
+      'charmander': '열정이 과제 제출 마감일보다 뜨거운 포켓몬.',
+      'squirtle': '냉정하고 침착하게 조별과제를 조율한다.',
+      'eevee': '상황에 맞게 다양한 스터디 전략으로 진화 가능.',
+      'jigglypuff': '공부 중 졸음을 유도하지만 사실 잠 안 자는 야행성.',
+      'snorlax': '자기 전 모든 것을 흡수하는 느긋한 천재.',
+      'meowth': '판례 속 핵심 단어를 기가 막히게 캐치한다.',
+      'psyduck': '혼란스러워 보이지만 아이디어가 번뜩인다.',
+      'gengar': '밤샘 공부도 유령처럼 사라지게 만드는 집중력.',
+      'machop': '케이스 브리핑도 체력으로 밀어붙인다.',
+      'abra': '앉자마자 졸지만, 깨어나면 천재적 해결책 제시.',
+      'magnemite': '논리를 자기장처럼 끌어모으는 법리 자석.',
+      'geodude': '압박 면접에서도 절대 흔들리지 않는 강철 멘탈.',
+      'onix': '단단하게 법조문을 꿰뚫는 분석력 보유.',
+      'cubone': '혼자서도 묵묵히 공부하는 독학 마스터.',
+      'dratini': '언젠간 드래곤처럼 날아오를 예비 법조인.',
+      'pidgey': '이슈를 넓게 조망하는 높은 시야의 소유자.',
+      'rattata': '작고 빠르게 핵심을 파고드는 집중력 천재.',
+      'bellsprout': '스스로 성장하며 지식을 흡수하는 유형.',
+      'slowpoke': '느려 보이지만 결국 모두 따라잡는 반전형.'
     };
 
-    const pokemons = Object.keys(descriptions);
-
+    // 이름을 해시해서 번호로 바꾸기 (랜덤 고정용)
     function hashName(name) {
       let hash = 0;
       for (let i = 0; i < name.length; i++) {
         hash += name.charCodeAt(i);
       }
-      return hash % pokemons.length;
+      return hash % randomPool.length;
     }
 
+    // 검색 함수
     function search() {
       const name = document.getElementById("nameInput").value.trim();
       if (!name) return;
 
-      let pokemon = assigned[name];
-      if (!pokemon) {
-        pokemon = pokemons[hashName(name)];
+      let pokemon;
+      if (assigned[name]) {
+        pokemon = assigned[name];
+      } else {
+        pokemon = randomPool[hashName(name)];
       }
 
-      const description = descriptions[pokemon];
+      const description = descriptions[pokemon] || "설명이 없습니다.";
       const imageUrl = `https://img.pokemondb.net/artwork/${pokemon}.jpg`;
 
       document.getElementById("result").innerHTML = `
