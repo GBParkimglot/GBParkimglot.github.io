@@ -107,7 +107,6 @@
       from {opacity: 0; transform: translateY(15px);}
       to {opacity: 1; transform: translateY(0);}
     }
-    /* 모바일 대응 */
     @media (max-width: 400px) {
       #ball-placeholder, #pokemon-card {
         width: 90vw;
@@ -139,13 +138,14 @@
   <div id="pokemon-card">
     <div class="flex-container">
       <img id="pokemon-image" src="" alt="포켓몬 이미지" />
-      <img id="opened-ball" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball-open.png" alt="열린 포켓볼" />
+      <img id="opened-ball" src="https://raw.githubusercontent.com/udon07/pokemon-assets/main/ball_open.png" alt="열린 포켓볼" />
     </div>
     <div class="name" id="pokemon-name"></div>
     <div class="desc" id="pokemon-desc"></div>
   </div>
 
   <script>
+    // 지정 이름 → 포켓몬 영문이름 매핑
     const nameToPokemon = {
       "박기범": "pikachu",
       "김민혁": "nosepass",
@@ -160,6 +160,15 @@
       "오세리": "hoothoot"
     };
 
+    // 50개 포켓몬 리스트 (기본 11개 + 39개 랜덤 후보)
+    const allPokemon = [
+      "pikachu","nosepass","ampharos","delibird","kecleon","aipom","smoochum","xatu","gorebyss","frogadier","hoothoot",
+      "bulbasaur","ivysaur","venusaur","charmander","charmeleon","charizard","squirtle","wartortle","blastoise",
+      "caterpie","metapod","butterfree","weedle","kakuna","beedrill","pidgey","pidgeotto","pidgeot","rattata",
+      "raticate","spearow","fearow","ekans","arbok","sandshrew","sandslash","nidoran-f","nidorina","nidoqueen"
+    ];
+
+    // 포켓몬 설명 (한국어 이름 + 법학 공부 맞춤 도감 설명)
     const pokemonData = {
       "pikachu": ["피카츄", "번개같이 빠른 법률 논리 정리와 민법 사례 분석에 능합니다."],
       "nosepass": ["코코파스", "항상 바른 방향으로 학문을 탐구하며 흔들림 없는 집중력을 자랑합니다."],
@@ -171,53 +180,86 @@
       "xatu": ["네이티오", "과거 판례와 미래 전망을 모두 보는 통찰력을 갖추고 있습니다."],
       "gorebyss": ["분홍장이", "세심한 관찰력으로 법률 문서의 작은 부분도 놓치지 않습니다."],
       "frogadier": ["개굴반장", "민첩한 사고와 신속한 문제 해결 능력을 발휘합니다."],
-      "hoothoot": ["부우부", "체계적인 계획을 세워 꾸준히 학습하는 신중한 자세가 돋보입니다."]
-    };
+      "hoothoot": ["부우부", "체계적인 계획을 세워 꾸준히 학습하는 신중한 자세가 돋보입니다."],
 
-    const allPokemon = [
-      "bulbasaur","ivysaur","venusaur","charmander","charmeleon","charizard","squirtle","wartortle","blastoise",
-      "caterpie","metapod","butterfree","weedle","kakuna","beedrill","pidgey","pidgeotto","pidgeot","rattata",
-      "raticate","spearow","fearow","ekans","arbok","sandshrew","sandslash","nidoran♀","nidorina","nidoqueen",
-      "nidoran♂","nidorino","nidoking","clefairy","clefable","vulpix","ninetales","jigglypuff","wigglytuff",
-      "zubat","golbat","oddish","gloom","vileplume","paras","parasect","venonat","venomoth","diglett","dugtrio"
-    ];
-
-    const extendedData = {
-      // 예시로 몇 개만 넣음, 필요시 확장 가능
       "bulbasaur": ["이상해씨", "기본을 탄탄히 하여 기초 법률 이론을 익히는 데 강점이 있습니다."],
-      "charizard": ["리자몽", "강력한 열정과 의지로 어려운 법적 문제도 해결합니다."],
-      "squirtle": ["꼬부기", "차분하고 체계적으로 공부하며 신중하게 판단합니다."],
-      // 추가로 더 넣어도 됨
+      "ivysaur": ["이상해풀", "체계적인 공부로 복잡한 법적 이슈도 단계적으로 해결합니다."],
+      "venusaur": ["이상해꽃", "법률 문제의 핵심을 정확히 파악해 효과적으로 대응합니다."],
+      "charmander": ["파이리", "열정적으로 법률 사례를 분석하며 불꽃 같은 집중력을 보여줍니다."],
+      "charmeleon": ["리자드", "끈기 있는 연구로 난해한 법 조항도 마스터합니다."],
+      "charizard": ["리자몽", "강력한 논리력과 자신감으로 법정에서도 빛나는 존재입니다."],
+      "squirtle": ["꼬부기", "차분하고 침착하게 법률 문서를 검토합니다."],
+      "wartortle": ["어니부기", "꾸준한 노력으로 복잡한 법률 지식을 쌓아갑니다."],
+      "blastoise": ["거북왕", "강인한 의지로 어려운 법률 문제도 끝까지 해결합니다."],
+
+      "caterpie": ["캐터피", "기초를 탄탄히 다져 법학 공부의 초석을 다집니다."],
+      "metapod": ["단데기", "인내심을 가지고 법률 지식을 점진적으로 확장합니다."],
+      "butterfree": ["버터플", "학습한 내용을 자유롭게 응용해 다양한 법률 문제에 대응합니다."],
+      "weedle": ["뿔충이", "꼼꼼한 주의력으로 법률 세부사항도 정확히 파악합니다."],
+      "kakuna": ["딱충이", "내실 있는 준비로 법률 시험을 차근차근 준비합니다."],
+      "beedrill": ["독침붕", "민첩한 판단력으로 신속하게 문제를 해결합니다."],
+      "pidgey": ["깨비참", "기본에 충실해 법학 기초 이론을 튼튼히 합니다."],
+      "pidgeotto": ["깨비드릴조", "상세한 분석으로 법률 문제를 다각도로 연구합니다."],
+      "pidgeot": ["깨비호", "강력한 집중력과 끈기로 법학 공부를 완성합니다."],
+      "rattata": ["구구", "신속한 이해력으로 법률 지식을 빠르게 습득합니다."],
+
+      "raticate": ["구구리", "강한 의지로 어려운 법률 문제도 물리칩니다."],
+      "spearow": ["깨비참", "예리한 판단으로 법률 사안을 신속하게 분류합니다."],
+      "fearow": ["깨비호", "폭넓은 시야로 법률 이슈를 전반적으로 조망합니다."],
+      "ekans": ["아보", "은밀하고 치밀한 조사로 법률 증거를 찾습니다."],
+      "arbok": ["아보크", "강력한 집중력으로 법률 전략을 세웁니다."],
+      "sandshrew": ["모래두지", "꾸준한 노력으로 법률 기본기를 다집니다."],
+      "sandslash": ["고지", "신속하고 정확한 판단으로 법률 문제를 해결합니다."],
+      "nidoran-f": ["니드런♀", "끈기 있는 연구로 법률 사례를 깊게 분석합니다."],
+      "nidorina": ["니드리나", "체계적인 준비로 시험 대비에 탁월합니다."],
+      "nidoqueen": ["니드퀸", "강한 책임감으로 법률 실무에 임합니다."]
     };
 
-    const nameToAssigned = {};
+    // 랜덤 포켓몬 매칭 저장용 (이름별 한 번 정해지면 고정)
+    const assignedRandoms = {};
+
+    function getRandomPokemonForName(name) {
+      if (assignedRandoms[name]) return assignedRandoms[name];
+
+      // 지정된 포켓몬은 바로 리턴
+      if (nameToPokemon[name]) {
+        assignedRandoms[name] = nameToPokemon[name];
+        return nameToPokemon[name];
+      }
+
+      // 랜덤 후보만 추출 (allPokemon 중 지정된 것은 제외)
+      const excludeSet = new Set(Object.values(nameToPokemon));
+      const candidates = allPokemon.filter(p => !excludeSet.has(p));
+
+      // 이름 해시를 이용해 랜덤 고정 (간단한 해시 함수)
+      let hash = 0;
+      for (let i=0; i < name.length; i++) {
+        hash = (hash * 31 + name.charCodeAt(i)) % candidates.length;
+      }
+      const chosen = candidates[hash];
+      assignedRandoms[name] = chosen;
+      return chosen;
+    }
 
     function showPokemon() {
-      const inputName = document.getElementById("nameInput").value.trim();
-      if (!inputName) {
-        alert("이름을 입력해 주세요.");
+      const input = document.getElementById("nameInput");
+      const name = input.value.trim();
+
+      if (!name) {
+        alert("이름을 입력해주세요!");
         return;
       }
 
-      let pkm = nameToPokemon[inputName];
+      const pkm = getRandomPokemonForName(name);
+      const data = pokemonData[pkm];
 
-      if (!pkm) {
-        if (!nameToAssigned[inputName]) {
-          // 이름 기반 해시로 랜덤 포켓몬 할당 (일관성 유지)
-          const hash = Array.from(inputName).reduce((a, c) => a + c.charCodeAt(0), 0);
-          pkm = allPokemon[hash % allPokemon.length];
-          nameToAssigned[inputName] = pkm;
-        } else {
-          pkm = nameToAssigned[inputName];
-        }
+      if (!data) {
+        alert("포켓몬 데이터를 찾을 수 없습니다.");
+        return;
       }
 
-      const data = pokemonData[pkm] || extendedData[pkm] || [pkm, "아직 등록되지 않은 포켓몬입니다."];
-
-      // 이미지 URL은 포켓몬 이름(영어 소문자)
       const imgUrl = `https://img.pokemondb.net/artwork/large/${pkm}.jpg`;
 
-      // 화면 전환
       document.getElementById("ball-placeholder").style.display = "none";
       document.getElementById("pokemon-card").style.display = "block";
 
